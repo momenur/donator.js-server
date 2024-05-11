@@ -84,12 +84,24 @@ async function run() {
 
     // ==============================================================
     // WRITE YOUR CODE HERE
+
+    // GET ALL Donations
     app.get("/api/v1/donations", async (req, res) => {
       const cursor = donationsCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
 
+    // get Single Donation
+    app.get("/api/v1/donations/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await donationsCollection.findOne({
+        _id: new ObjectId(id),
+      });
+      res.send(result);
+    });
+
+    // CREATE/POST Donation
     app.post("/api/v1/create-donation", async (req, res) => {
       const newDonation = req.body;
       console.log(newDonation);
@@ -97,6 +109,7 @@ async function run() {
       res.send(result);
     });
 
+    // DELETE Donation
     app.delete("/api/v1/donations/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
@@ -104,6 +117,7 @@ async function run() {
       res.send(result);
     });
 
+    // UPDATE/PUT Donation
     app.put("/api/v1/donations/:id", async (req, res) => {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
